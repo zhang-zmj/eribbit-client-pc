@@ -78,154 +78,23 @@
 
 执行 `npm i normalize.css` 安装重置样式的包，然后在 `main.js` 导入 `normalize.css` 即可。
 
-```diff
-import { createApp } from 'vue'
-import App from './App.vue'
-import router from './router'
-import store from './store'
-
-+import 'normalize.css'
-
-createApp(App).use(store).use(router).mount('#app')
-```
-
 - 公用样式
 
 新建文件 `src/assets/styles/common.less` 在该文件写入常用的样式，然后在 `main.js` 导入即可。
 
-```
-src/assets/styles/common.less
-// 重置样式
-* {
-  box-sizing: border-box;
- }
- 
- html {
-   height: 100%;
-   font-size: 14px;
- }
- body {
-   height: 100%;
-   color: #333;
-   min-width: 1240px;
-   font: 1em/1.4 'Microsoft Yahei', 'PingFang SC', 'Avenir', 'Segoe UI', 'Hiragino Sans GB', 'STHeiti', 'Microsoft Sans Serif', 'WenQuanYi Micro Hei', sans-serif
- }
- 
- ul,
- h1,
- h3,
- h4,
- p,
- dl,
- dd {
-   padding: 0;
-   margin: 0;
- }
- 
- a {
-   text-decoration: none;
-   color: #333;
-   outline: none;
- }
- 
- i {
-   font-style: normal;
- }
- 
- input[type="text"],
- input[type="search"],
- input[type="password"], 
- input[type="checkbox"]{
-   padding: 0;
-   outline: none;
-   border: none;
-   -webkit-appearance: none;
-   &::placeholder{
-     color: #ccc;
-   }
- }
- 
- img {
-   max-width: 100%;
-   max-height: 100%;
-   vertical-align: middle;
- }
- 
- ul {
-   list-style: none;
- }
- 
- #app {
-   background: #f5f5f5;
-   user-select: none;
- }
- 
- .container {
-   width: 1240px;
-   margin: 0 auto;
-   position: relative;
- }
- 
- .ellipsis {
-   white-space: nowrap;
-   text-overflow: ellipsis;
-   overflow: hidden;
- }
- 
- .ellipsis-2 {
-   word-break: break-all;
-   text-overflow: ellipsis;
-   display: -webkit-box;
-   -webkit-box-orient: vertical;
-   -webkit-line-clamp: 2;
-   overflow: hidden;
- }
- 
- .fl {
-   float: left;
- }
- 
- .fr {
-   float: right;
- }
- 
- .clearfix:after {
-   content: ".";
-   display: block;
-   visibility: hidden;
-   height: 0;
-   line-height: 0;
-   clear: both;
- }
-src/main.js
-import { createApp } from 'vue'
-import App from './App.vue'
-import router from './router'
-import store from './store'
-
-import 'normalize.css'
-+import '@/assets/styles/common.less'
-
-createApp(App).use(store).use(router).mount('#app')
-```
-
 **总结：** 重置样式使用normalize.css，项目公用样式common.less
 
-## [#](http://zhoushugang.gitee.io/erabbit-client-pc-document/guide/03-home.html#_04-首页-顶部通栏布局)04-首页-顶部通栏布局
+
+
+#### 04-首页-顶部通栏布局
 
 > **目的：** 完成顶部通栏组件。
 
-![1616335492457](data:image/png;base64,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)
+![1616335492457](/Users/zmj/Desktop/eribbit-client-pc/images/首页头部导航.png)
 
 大致步骤：
 
 1）在 `public/index.html` 引入字体图标文件。
-
-```diff
-    <link rel="icon" href="<%= BASE_URL %>favicon.ico">
-+    <link rel="stylesheet" href="//at.alicdn.com/t/font_2143783_iq6z4ey5vu.css">
-    <title><%= htmlWebpackPlugin.options.title %></title>
-```
 
 2）在 `src/components/` 下新建 `app-topnav.vue` 组件，基础布局如下：
 
@@ -338,9 +207,11 @@ export default {
 
 **总结：** 完成基础布局，根据用户信息动态展示导航菜单。
 
-## [#](http://zhoushugang.gitee.io/erabbit-client-pc-document/guide/03-home.html#_05-首页-头部布局)05-首页-头部布局
 
-> **目的：** 完成首页头部布局，了解结构。
+
+#### 05-首页-头部布局
+
+> **s目的：** 完成首页头部布局，了解结构。
 
 ![1616335520936](http://zhoushugang.gitee.io/erabbit-client-pc-document/assets/img/1616335520936.0e870693.png)
 
