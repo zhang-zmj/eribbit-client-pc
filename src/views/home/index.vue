@@ -8,4 +8,9 @@ export default {
 }
 </script>
 
-<style lang="less" scoped></style>
+<style lang="less" scoped>
+// @import '../../assets/styles/variables.less';
+.container {
+  color: @xtxColor;
+}
+</style>
