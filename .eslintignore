@@ -1,0 +1,3 @@
+/dist
+/src/vender
+# eslint 需要忽略的文件配置
