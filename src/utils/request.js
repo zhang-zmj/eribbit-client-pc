@@ -18,7 +18,7 @@ const instance = axios.create({
 // 请求头 拦截业务逻辑
 instance.interceptors.request.use(config => {
   // 1、获取用户信息对象
-  const { profile } = store.state.user.profile
+  const { profile } = store.state.user
   // 2、判断是否有token
   if (profile.token) {
     // 3、设置token
