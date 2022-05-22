@@ -68,7 +68,9 @@
 
 **总结：** 知道如何定义less变量和混入代码并使用他们，通过vue-resources-loader完成代码注入再每个less文件和vue组件中。
 
-## [#](http://zhoushugang.gitee.io/erabbit-client-pc-document/guide/03-home.html#_03-首页-样式重置与公用)03-首页-样式重置与公用
+
+
+#### 03-首页-样式重置与公用
 
 > **目的：** 准备网站所需的重置样式代码，以及一些公用样式代码。
 
