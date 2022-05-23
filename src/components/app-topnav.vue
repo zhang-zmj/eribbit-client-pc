@@ -18,20 +18,25 @@
         <li><a href="javascript:;">会员中心</a></li>
         <li><a href="javascript:;">帮助中心</a></li>
         <li><a href="javascript:;">关于我们</a></li>
-        <li><a href="javascript:;">手机版</a></li>
+        <li>
+          <a href="javascript:;"><i class="iconfont icon-phone"></i>手机版</a>
+        </li>
       </ul>
     </div>
   </nav>
 </template>
 
 <script>
+import { computed } from 'vue'
 import { useStore } from 'vuex'
 export default {
   name: 'AppTopnav',
   setup() {
     // 获取用户的登录信息才能控制切换导航菜单
     const store = useStore()
-    const { profile } = store.state.user
+    const profile = computed(() => {
+      return store.state.user.profile
+    })
     return {
       profile
     }

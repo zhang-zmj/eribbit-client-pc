@@ -2,7 +2,8 @@
   <!-- 1、顶部通栏 -->
   <AppNavbar />
   <!-- 2、头部组件 -->
-  <header>头部组件</header>
+  <AppHeader />
+
   <!-- 3、内容容器 -->
   <div class="main">
     <!-- 二级路由 -->
@@ -14,10 +15,12 @@
 
 <script>
 import AppNavbar from '@/components/app-topnav'
+import AppHeader from '@/components/app-header.vue'
 export default {
   name: 'MainLayout',
   components: {
-    AppNavbar
+    AppNavbar,
+    AppHeader
   }
 }
 </script>
