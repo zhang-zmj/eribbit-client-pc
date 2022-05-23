@@ -10,17 +10,20 @@
     <router-view></router-view>
   </div>
   <!-- 4、底部组件   -->
-  <footer>底部组件</footer>
+  <AppFooter />
 </template>
 
 <script>
 import AppNavbar from '@/components/app-topnav'
-import AppHeader from '@/components/app-header.vue'
+import AppHeader from '@/components/app-header'
+import AppFooter from '@/components/app-footer'
+
 export default {
   name: 'MainLayout',
   components: {
     AppNavbar,
-    AppHeader
+    AppHeader,
+    AppFooter
   }
 }
 </script>
