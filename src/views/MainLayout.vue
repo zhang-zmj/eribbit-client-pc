@@ -17,6 +17,7 @@
 import AppNavbar from '@/components/app-topnav'
 import AppHeader from '@/components/app-header'
 import AppFooter from '@/components/app-footer'
+import { useStore } from 'vuex'
 
 export default {
   name: 'MainLayout',
@@ -24,6 +25,11 @@ export default {
     AppNavbar,
     AppHeader,
     AppFooter
+  },
+  // 获取下分类数据
+  setup() {
+    const store = useStore()
+    store.dispatch('category/getList')
   }
 }
 </script>
