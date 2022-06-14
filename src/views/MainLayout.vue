@@ -14,8 +14,8 @@
 </template>
 
 <script>
-import AppNavbar from '@/components/app-topnav'
-import AppHeader from '@/components/app-header'
+import AppNavbar from '@/components/HomeNav/app-topnav.vue'
+import AppHeader from '@/components/HomeNav/app-header'
 import AppFooter from '@/components/app-footer'
 import { useStore } from 'vuex'
 

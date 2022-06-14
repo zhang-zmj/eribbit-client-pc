@@ -2,12 +2,15 @@
   <header class="app-header">
     <div class="container">
       <h1 class="logo"><RouterLink to="/">小兔鲜</RouterLink></h1>
+
       <!-- 使用头部导航组件 -->
       <AppHeaderNav />
+
       <div class="search">
         <i class="iconfont icon-search"></i>
         <input type="text" placeholder="搜一搜" />
       </div>
+
       <div class="cart">
         <a class="curr" href="#">
           <i class="iconfont icon-cart"></i><em>2</em>
@@ -32,7 +35,6 @@ export default {
   background: #fff;
   .container {
     display: flex;
-    // 上下居中
     align-items: center;
   }
   .logo {
@@ -42,7 +44,8 @@ export default {
       height: 132px;
       width: 100%;
       text-indent: -9999px;
-      background: url(../assets/images/logo.png) no-repeat center 18px / contain;
+      background: url(../../assets/images/logo.png) no-repeat center 18px /
+        contain;
     }
   }
   .search {

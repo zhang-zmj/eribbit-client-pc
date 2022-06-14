@@ -3,6 +3,8 @@
     <li class="home"><RouterLink to="/">首页</RouterLink></li>
     <li v-for="item in list" :key="item.id">
       <RouterLink to="/">{{ item.name }}</RouterLink>
+
+      <!-- 下面的下拉框 -->
       <div class="layer">
         <ul>
           <li v-for="child in item.children" :key="child.id">
