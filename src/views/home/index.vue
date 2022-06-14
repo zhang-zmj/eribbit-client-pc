@@ -1,10 +1,10 @@
 <template>
-  <div class="container">HomePage</div>
+  <div class="xtx-home-page">首页</div>
 </template>
 
 <script>
 export default {
-  name: 'HomePage'
+  name: 'xtx-home-page'
 }
 </script>
 

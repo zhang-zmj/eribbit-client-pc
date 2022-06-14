@@ -1,9 +1,8 @@
 <template>
   <!-- 1、顶部通栏 -->
-  <AppNavbar />
+  <AppTopnav />
   <!-- 2、头部组件 -->
   <AppHeader />
-
   <!-- 3、内容容器 -->
   <div class="app-body">
     <!-- 二级路由 -->
@@ -14,15 +13,15 @@
 </template>
 
 <script>
-import AppNavbar from '@/components/HomeNav/app-topnav.vue'
+import AppTopnav from '@/components/HomeNav/app-topnav'
 import AppHeader from '@/components/HomeNav/app-header'
 import AppFooter from '@/components/app-footer'
 import { useStore } from 'vuex'
 
 export default {
-  name: 'MainLayout',
+  name: 'xtx-layout',
   components: {
-    AppNavbar,
+    AppTopnav,
     AppHeader,
     AppFooter
   },

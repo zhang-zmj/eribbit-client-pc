@@ -1,16 +1,21 @@
 <template>
   <ul class="app-header-nav">
     <li class="home"><RouterLink to="/">首页</RouterLink></li>
-    <li v-for="item in list" :key="item.id">
-      <RouterLink to="/">{{ item.name }}</RouterLink>
 
+    <li
+      v-for="item in list"
+      :key="item.id"
+      @mousemove="show(item)"
+      @mouseleave="hide(item)"
+    >
+      <RouterLink :to="`/category/${item.id}`">{{ item.name }}</RouterLink>
       <!-- 下面的下拉框 -->
-      <div class="layer">
+      <div class="layer" :class="{ open: item.open }">
         <ul>
-          <li v-for="child in item.children" :key="child.id">
-            <RouterLink to="/">
-              <img :src="child.picture" alt="" />
-              <p>{{ child.name }}</p>
+          <li v-for="sub in item.children" :key="sub.id">
+            <RouterLink :to="`/category/sub/${sub.id}`" @click="hide(item)">
+              <img :src="sub.picture" alt="" />
+              <p>{{ sub.name }}</p>
             </RouterLink>
           </li>
         </ul>
@@ -29,8 +34,16 @@ export default {
     const list = computed(() => {
       return store.state.category.list
     })
+    const show = (item) => {
+      store.commit('category/show', item)
+    }
+    const hide = (item) => {
+      store.commit('category/hide', item)
+    }
     return {
-      list
+      list,
+      show,
+      hide
     }
   }
 }
@@ -57,15 +70,19 @@ export default {
         color: @xtxColor;
         border-bottom: 1px solid @xtxColor;
       }
-      > .layer {
-        height: 132px;
-        opacity: 1;
-      }
+      // > .layer {
+      //   height: 132px;
+      //   opacity: 1;
+      // }
     }
   }
 }
 
 .layer {
+  &.open {
+    height: 132px;
+    opacity: 1;
+  }
   width: 1240px;
   background-color: #fff;
   position: absolute;
@@ -101,3 +118,13 @@ export default {
   }
 }
 </style>
+
+<!--
+  描述：由于是单页面路由跳转不会刷新页面，css的hover一直触发无法关闭分类弹窗。
+
+  大致逻辑：
+  * 配置路由组件支持分类跳转
+  * 鼠标进入一级分类展示对应的二级分类弹窗
+  * 点击一级分类，二级分类，隐藏二级分类弹窗
+  * 离开一级分类，二级分类，隐藏二级分类弹窗
+ -->
