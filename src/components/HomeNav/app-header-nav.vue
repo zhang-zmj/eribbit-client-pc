@@ -8,6 +8,7 @@
       @mousemove="show(item)"
       @mouseleave="hide(item)"
     >
+      <!-- 最上面的处理 -->
       <RouterLink :to="`/category/${item.id}`">{{ item.name }}</RouterLink>
       <!-- 下面的下拉框 -->
       <div class="layer" :class="{ open: item.open }">
