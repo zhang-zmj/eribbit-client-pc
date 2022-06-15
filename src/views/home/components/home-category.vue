@@ -154,6 +154,7 @@ export default {
     ul {
       display: flex;
       flex-wrap: wrap;
+
       li {
         width: 310px;
         height: 120px;
