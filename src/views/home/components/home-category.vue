@@ -21,7 +21,10 @@
 
     <!-- 弹层 -->
     <div class="layer">
-      <!-- <h4>分类推荐 <small>根据您的购买或浏览记录推荐</small></h4> -->
+      <h4 v-if="currCategory">
+        {{ currCategory.id === 'brand' ? '品牌' : '分类' }}推荐
+        <small>根据您的购买或浏览记录推荐</small>
+      </h4>
       <ul v-if="currCategory && currCategory.goods">
         <li v-for="item in currCategory.goods" :key="item.id">
           <RouterLink to="/">
@@ -34,6 +37,23 @@
           </RouterLink>
         </li>
       </ul>
+
+      <ul
+        v-if="currCategory && currCategory.brands && currCategory.brands.length"
+      >
+        <li class="brand" v-for="item in currCategory.brands" :key="item.id">
+          <RouterLink to="/">
+            <img :src="item.picture" alt="" />
+            <div class="info">
+              <p class="place">
+                <i class="iconfont icon-dingwei"></i>{{ item.place }}
+              </p>
+              <p class="name ellipsis">{{ item.name }}</p>
+              <p class="desc ellipsis-2">{{ item.desc }}</p>
+            </div>
+          </RouterLink>
+        </li>
+      </ul>
     </div>
   </div>
 </template>
@@ -41,6 +61,7 @@
 <script>
 import { useStore } from 'vuex'
 import { reactive, computed, ref } from 'vue'
+import { findBrand } from '@/api/home.js'
 export default {
   name: 'HomeCategory',
   setup(props) {
@@ -52,7 +73,8 @@ export default {
     const brand = reactive({
       id: 'brand',
       name: '品牌',
-      children: [{ id: 'brand-chilren', name: '品牌推荐' }]
+      children: [{ id: 'brand-chilren', name: '品牌推荐' }],
+      brands: []
     })
     const store = useStore()
     const menuList = computed(() => {
@@ -73,6 +95,11 @@ export default {
     const categoryId = ref(null)
     const currCategory = computed(() => {
       return menuList.value.find((item) => item.id === categoryId.value)
+    })
+
+    // 获取品牌数据
+    findBrand().then((data) => {
+      brand.brands = data.result
     })
     return { menuList, categoryId, currCategory }
   }
@@ -108,6 +135,7 @@ export default {
   .layer {
     width: 990px;
     height: 500px;
+    overflow: hidden;
     background: rgba(255, 255, 255, 0.8);
     position: absolute;
     left: 250px;
@@ -129,8 +157,7 @@ export default {
       li {
         width: 310px;
         height: 120px;
-        margin-right: 15px;
-        margin-bottom: 15px;
+        margin: 5px 15px 10px 0;
         border: 1px solid #eee;
         border-radius: 4px;
         background: #fff;
@@ -174,12 +201,11 @@ export default {
       }
       // 品牌的样式
       li.brand {
-        height: 180px;
         a {
           align-items: flex-start;
           img {
-            width: 120px;
-            height: 160px;
+            width: 95px;
+            height: 95px;
           }
           .info {
             p {
