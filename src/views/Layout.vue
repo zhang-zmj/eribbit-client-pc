@@ -4,14 +4,15 @@
   <!-- 2、头部组件 -->
   <AppHeader />
 
-  <!-- 吸顶头部 -->
+  <!-- 3、吸顶头部 -->
   <AppHeaderSticky />
 
-  <!-- 3、内容容器 -->
+  <!-- 4、内容容器 -->
   <div class="app-body">
     <!-- 二级路由 -->
     <router-view></router-view>
   </div>
+
   <!-- 4、底部组件   -->
   <AppFooter />
 </template>
