@@ -1,12 +1,14 @@
 <template>
   <div class="xtx-carousel">
     <ul class="carousel-body">
-      <li class="carousel-item fade">
+      <li
+        class="carousel-item fade"
+        v-for="(item, i) in sliders"
+        :key="i"
+        :class="{ fade: index === i }"
+      >
         <RouterLink to="/">
-          <img
-            src="http://yjy-xiaotuxian-dev.oss-cn-beijing.aliyuncs.com/picture/2021-04-15/1ba86bcc-ae71-42a3-bc3e-37b662f7f07e.jpg"
-            alt=""
-          />
+          <img :src="item.imgUrl" alt="" />
         </RouterLink>
       </li>
     </ul>
@@ -23,8 +25,20 @@
 </template>
 
 <script>
+import { ref } from 'vue'
 export default {
-  name: 'XtxCarousel'
+  name: 'XtxCarousel',
+  props: {
+    sliders: {
+      type: Array,
+      default: () => []
+    }
+  },
+  setup() {
+    // 默认显示的图片的索引
+    const index = ref(0)
+    return { index }
+  }
 }
 </script>
 
