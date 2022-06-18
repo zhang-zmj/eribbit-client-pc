@@ -145,7 +145,7 @@ export default {
   .layer {
     width: 990px;
     height: 500px;
-    overflow: hidden;
+    overflow: auto;
     background: rgba(255, 255, 255, 0.8);
     position: absolute;
     left: 250px;

@@ -1,20 +1,22 @@
 <template>
-  <div class="page-home">
-    <div class="home-entry">
-      <div class="container">
-        <!-- 左侧分类 -->
-        <HomeCategory />
-      </div>
+  <div class="home-entry">
+    <div class="container">
+      <!-- 左侧分类 -->
+      <HomeCategory />
+      <!-- 轮播图 -->
+      <HomeBanner />
     </div>
   </div>
 </template>
 
 <script>
 import HomeCategory from './components/home-category'
+import HomeBanner from './components/home-banner'
 export default {
-  name: 'PageHome',
+  name: 'HomePage',
   components: {
-    HomeCategory
+    HomeCategory,
+    HomeBanner
   }
 }
 </script>
