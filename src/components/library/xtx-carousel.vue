@@ -1,8 +1,8 @@
 <template>
-  <div class="xtx-carousel">
+  <div class="xtx-carousel" @mouseenter="stop()" @mouseleave="start()">
     <ul class="carousel-body">
       <li
-        class="carousel-item fade"
+        class="carousel-item"
         v-for="(item, i) in sliders"
         :key="i"
         :class="{ fade: index === i }"
@@ -12,32 +12,99 @@
         </RouterLink>
       </li>
     </ul>
-    <a href="javascript:;" class="carousel-btn prev"
+    <a @click="toggle(-1)" href="javascript:;" class="carousel-btn prev"
       ><i class="iconfont icon-angle-left"></i
     ></a>
-    <a href="javascript:;" class="carousel-btn next"
+    <a @click="toggle(1)" href="javascript:;" class="carousel-btn next"
       ><i class="iconfont icon-angle-right"></i
     ></a>
     <div class="carousel-indicator">
-      <span v-for="i in 5" :key="i"></span>
+      <!-- active 激活点 -->
+      <span
+        @click="index = i"
+        v-for="(item, i) in sliders"
+        :key="i"
+        :class="{ active: index === i }"
+      ></span>
     </div>
   </div>
 </template>
 
 <script>
-import { ref } from 'vue'
+import { ref, watch, onUnmounted } from 'vue'
 export default {
   name: 'XtxCarousel',
   props: {
     sliders: {
       type: Array,
       default: () => []
+    },
+    duration: {
+      type: Number,
+      default: 2000
+    },
+    autoPlay: {
+      type: Boolean,
+      default: false
     }
   },
-  setup() {
+  setup(props) {
     // 默认显示的图片的索引
     const index = ref(0)
-    return { index }
+    // 自动播放
+    let timer = null
+    const autoPlayFn = () => {
+      clearInterval(timer)
+      timer = setInterval(() => {
+        index.value++
+        if (index.value >= props.sliders.length) {
+          index.value = 0
+        }
+      }, props.duration)
+    }
+    watch(
+      () => props.sliders,
+      (newVal) => {
+        console.log('--------你好啊，发生变化了吗？？？', newVal.length)
+        // 有数据&开启自动播放，才调用自动播放函数
+        if (newVal.length && props.autoPlay) {
+          index.value = 0
+          autoPlayFn()
+        }
+      },
+      { immediate: true }
+    )
+
+    // 鼠标进入停止，移出开启自动，前提条件：autoPlay为true
+    const stop = () => {
+      if (timer) clearInterval(timer)
+    }
+    const start = () => {
+      if (props.sliders.length && props.autoPlay) {
+        autoPlayFn()
+      }
+    }
+
+    // 上一张下一张
+    const toggle = (step) => {
+      const newIndex = index.value + step
+      if (newIndex >= props.sliders.length) {
+        index.value = 0
+        return
+      }
+      if (newIndex < 0) {
+        index.value = props.sliders.length - 1
+        return
+      }
+      index.value = newIndex
+    }
+
+    // 组件消耗，清理定时器
+    onUnmounted(() => {
+      clearInterval(timer)
+    })
+
+    return { index, stop, start, toggle }
   }
 }
 </script>
@@ -118,6 +185,12 @@ export default {
     .carousel-btn {
       opacity: 1;
     }
+  }
+  ::v-deep .carousel-btn.prev {
+    left: 270px;
+  }
+  ::v-deep .carousel-indicator {
+    padding-left: 250px;
   }
 }
 </style>
