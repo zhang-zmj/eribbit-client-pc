@@ -3,25 +3,26 @@
     <div class="container">
       <div class="head">
         <h3>
-          <div class="head-left">
-            {{ title }} <small> {{ subTitle }} </small>
-          </div>
-          <div class="head-right"><slot name="right"></slot></div>
+          {{ title }}<small>{{ subTitle }}</small>
         </h3>
+        <!-- 右上角插槽 -->
+        <slot name="right" />
       </div>
-      <slot></slot>
+      <!-- 默认插槽，面板内容 -->
+      <slot />
     </div>
   </div>
 </template>
-
 <script>
 export default {
-  name: 'HomePannel',
+  name: 'HomePanel',
   props: {
+    // 标题
     title: {
       type: String,
       default: ''
     },
+    // 副标题
     subTitle: {
       type: String,
       default: ''
@@ -29,17 +30,14 @@ export default {
   }
 }
 </script>
-
-<style lang="less" scoped>
+<style scoped lang="less">
 .home-panel {
-  background: #ffffff;
+  background-color: #fff;
   .head {
     padding: 40px 0;
     display: flex;
     align-items: flex-end;
     h3 {
-      display: flex;
-      justify-content: space-between;
       flex: 1;
       font-size: 32px;
       font-weight: normal;

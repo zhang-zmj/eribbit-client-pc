@@ -51,13 +51,12 @@ import { useLazyData } from '@/hooks'
 export default {
   name: 'HomeBrand',
   components: { HomePanel },
-  setup(props) {
+  setup() {
     // 获取数据
     // const brands = ref([])
-    // findBrand(10).then((data) => {
+    // findBrand(10).then(data => {
     //   brands.value = data.result
     // })
-
     // 注意：useLazyData需要的是API函数，如果遇到要传参的情况，自己写函数再函数中调用API
     const { target, result } = useLazyData(() => findBrand(10))
 
@@ -70,15 +69,24 @@ export default {
       if (newIndex < 0 || newIndex > 1) return
       index.value = newIndex
     }
-
     return { brands: result, toggle, index, target }
   }
 }
 </script>
 
 <style scoped lang="less">
+.skeleton {
+  width: 100%;
+  display: flex;
+  .item {
+    margin-right: 10px;
+    &:nth-child(5n) {
+      margin-right: 0;
+    }
+  }
+}
 .home-panel {
-  background: #f5f5f5;
+  background: #fff;
 }
 .iconfont {
   width: 20px;
@@ -118,17 +126,6 @@ export default {
       img {
         width: 240px;
         height: 305px;
-      }
-    }
-  }
-
-  .skeleton {
-    width: 100%;
-    display: flex;
-    .item {
-      margin-right: 10px;
-      &:nth-child(5n) {
-        margin-right: 0;
       }
     }
   }
