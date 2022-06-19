@@ -7,6 +7,8 @@
       <HomeBanner />
       <!-- 新鲜好物 -->
       <HomeNew />
+      <!-- 人气推荐 -->
+      <HomeHot />
     </div>
   </div>
 </template>
@@ -15,12 +17,14 @@
 import HomeCategory from './components/home-category'
 import HomeBanner from './components/home-banner'
 import HomeNew from './components/home-new'
+import HomeHot from './components/home-hot'
 export default {
   name: 'HomePage',
   components: {
     HomeCategory,
     HomeBanner,
-    HomeNew
+    HomeNew,
+    HomeHot
   }
 }
 </script>
