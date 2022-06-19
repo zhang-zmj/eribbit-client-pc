@@ -3,8 +3,10 @@
     <div class="container">
       <div class="head">
         <h3>
-          {{ title }} <small> {{ subTitle }} </small>
-          <slot name="right"></slot>
+          <div class="head-left">
+            {{ title }} <small> {{ subTitle }} </small>
+          </div>
+          <div class="head-right"><slot name="right"></slot></div>
         </h3>
       </div>
       <slot></slot>
@@ -30,12 +32,14 @@ export default {
 
 <style lang="less" scoped>
 .home-panel {
-  background: #fff;
+  background: #ffffff;
   .head {
     padding: 40px 0;
     display: flex;
     align-items: flex-end;
     h3 {
+      display: flex;
+      justify-content: space-between;
       flex: 1;
       font-size: 32px;
       font-weight: normal;
