@@ -1,146 +1,120 @@
 <template>
-  <div class="sub-sort">
-    <div class="sort">
-      <a
-        :class="{ active: sortParams.sortField === null }"
-        @click="changeSort(null)"
-        href="javascript:;"
-        >默认排序</a
-      >
-      <a
-        :class="{ active: sortParams.sortField === 'publishTime' }"
-        @click="changeSort('publishTime')"
-        href="javascript:;"
-        >最新商品</a
-      >
-      <a
-        :class="{ active: sortParams.sortField === 'orderNum' }"
-        @click="changeSort('orderNum')"
-        href="javascript:;"
-        >最高人气</a
-      >
-      <a
-        :class="{ active: sortParams.sortField === 'evaluateNum' }"
-        @click="changeSort('evaluateNum')"
-        href="javascript:;"
-        >评论最多</a
-      >
-      <a @click="changeSort('price')" href="javascript:;">
-        价格排序
-        <i
-          class="arrow up"
-          :class="{
-            active:
-              sortParams.sortField === 'price' && sortParams.sortMethod == 'asc'
-          }"
+  <div class="sub-categroy">
+    <div class="container">
+      <!-- 面包屑 -->
+      <SubBread />
+      <!-- 筛选区 -->
+      <SubFilter @filter-change="filterChange" />
+      <!-- 商品面板（排序+列表） -->
+      <div class="goods-list">
+        <SubSort @sort-change="sortChange" />
+        <ul>
+          <li v-for="goods in goodsList" :key="goods.id">
+            <GoodsItem :goods="goods" />
+          </li>
+        </ul>
+        <!-- 无限加载组件 -->
+        <XtxInfiniteLoading
+          :loading="loading"
+          :finished="finished"
+          @infinite="getData"
         />
-        <i
-          class="arrow down"
-          :class="{
-            active:
-              sortParams.sortField === 'price' &&
-              sortParams.sortMethod == 'desc'
-          }"
-        />
-      </a>
-    </div>
-    <div class="check">
-      <XtxCheckbox v-model="sortParams.inventory">仅显示有货商品</XtxCheckbox>
-      <XtxCheckbox v-model="sortParams.onlyDiscount"
-        >仅显示特惠商品</XtxCheckbox
-      >
+      </div>
     </div>
   </div>
 </template>
 <script>
-import { reactive } from 'vue'
+import SubBread from './components/sub-bread'
+import SubFilter from './components/sub-filter'
+import SubSort from './components/sub-sort'
+import GoodsItem from './components/goods-item'
+import { ref, watch } from 'vue'
+import { findSubCategoryGoods } from '@/api/category'
+import { useRoute } from 'vue-router'
 export default {
-  name: 'SubSort',
+  name: 'SubCategory',
+  components: { SubBread, SubFilter, SubSort, GoodsItem },
   setup() {
-    // 1. 根据后台需要的参数定义数据对象
-    // 2. 根据数据对象，绑定组件（复选框，排序按钮）
-    // 3. 在操作排序组件的时候，需要反馈给数据对象
-    // sortField====>publishTime,orderNum,price,evaluateNum
-    // sortMethod====>asc为正序 desc为倒序
-    const sortParams = reactive({
-      inventory: false,
-      onlyDiscount: false,
-      sortField: null,
-      sortMethod: null
-    })
-
-    // 改变排序
-    const changeSort = (sortField) => {
-      if (sortField === 'price') {
-        sortParams.sortField = sortField
-        if (sortParams.sortMethod === null) {
-          // 第一次点击，默认是降序
-          sortParams.sortMethod = 'desc'
+    const route = useRoute()
+    // 加载中
+    const loading = ref(false)
+    // 是否加载完毕
+    const finished = ref(false)
+    // 商品列表数据
+    const goodsList = ref([])
+    // 请求参数
+    let reqParams = {
+      page: 1,
+      pageSize: 20
+    }
+    const getData = () => {
+      loading.value = true
+      // 设置二级分类的ID
+      reqParams.categoryId = route.params.id
+      findSubCategoryGoods(reqParams).then(({ result }) => {
+        // 获取数据成功
+        if (result.items.length) {
+          // 有数据就追加数据
+          goodsList.value.push(...result.items)
+          // 把page改成下一页页码
+          reqParams.page++
         } else {
-          // 其他情况根据当前排序取反
-          sortParams.sortMethod =
-            sortParams.sortMethod === 'desc' ? 'asc' : 'desc'
+          // 没有数据，代表加载完成
+          finished.value = true
         }
-      } else {
-        // 如果排序未改变停止逻辑
-        if (sortParams.sortField === sortField) return
-        sortParams.sortField = sortField
-        sortParams.sortMethod = null
+        loading.value = false
+      })
+    }
+    // 在更改了二级分类的时候需要重新加载数据
+    watch(
+      () => route.params.id,
+      (newVal) => {
+        if (newVal && `/category/sub/${newVal}` === route.path) {
+          finished.value = false
+          goodsList.value = [] // 导致列表空的，加载更多组件顶上来，进入可视区，区加载数据
+          reqParams = {
+            page: 1,
+            pageSize: 20
+          }
+        }
       }
+    )
+    // 1. 更改排序组件的筛选数据，重新请求
+    const sortChange = (sortParams) => {
+      finished.value = false
+      // 合并请求参数，保留之前参数
+      reqParams = { ...reqParams, ...sortParams }
+      reqParams.page = 1
+      goodsList.value = []
+    }
+    // 2. 更改筛选组件的筛选数据，重新请求
+    const filterChange = (filterParams) => {
+      finished.value = false
+      // 合并请求参数，保留之前参数
+      reqParams = { ...reqParams, ...filterParams }
+      reqParams.page = 1
+      goodsList.value = []
     }
 
-    return { sortParams, changeSort }
+    return { loading, finished, getData, goodsList, sortChange, filterChange }
   }
 }
 </script>
 <style scoped lang="less">
-.sub-sort {
-  height: 80px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  .sort {
+.goods-list {
+  background: #fff;
+  padding: 0 25px;
+  margin-top: 25px;
+  ul {
     display: flex;
-    a {
-      height: 30px;
-      line-height: 28px;
-      border: 1px solid #e4e4e4;
-      padding: 0 20px;
+    flex-wrap: wrap;
+    padding: 0 5px;
+    li {
       margin-right: 20px;
-      color: #999;
-      border-radius: 2px;
-      position: relative;
-      transition: all 0.3s;
-      &.active {
-        background: @xtxColor;
-        border-color: @xtxColor;
-        color: #fff;
+      margin-bottom: 20px;
+      &:nth-child(5n) {
+        margin-right: 0;
       }
-      .arrow {
-        position: absolute;
-        border: 5px solid transparent;
-        right: 8px;
-        &.up {
-          top: 3px;
-          border-bottom-color: #bbb;
-          &.active {
-            border-bottom-color: @xtxColor;
-          }
-        }
-        &.down {
-          top: 15px;
-          border-top-color: #bbb;
-          &.active {
-            border-top-color: @xtxColor;
-          }
-        }
-      }
-    }
-  }
-  .check {
-    .xtx-checkbox {
-      margin-left: 20px;
-      color: #999;
     }
   }
 }
