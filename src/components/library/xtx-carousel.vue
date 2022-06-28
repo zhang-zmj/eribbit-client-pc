@@ -65,7 +65,6 @@ export default {
     watch(
       () => props.sliders,
       (newVal) => {
-        console.log('--------你好啊，发生变化了吗？？？', newVal.length)
         // 有数据&开启自动播放，才调用自动播放函数
         if (newVal.length && props.autoPlay) {
           index.value = 0

@@ -31,7 +31,6 @@ export default {
     async getList ({ commit }) {
       // 获取分类数据
       const { result } = await findAllCategory()
-      console.log('--------------', result)
       result.forEach(item => {
         /*
           * 给每一个一级分类定义控制显示隐藏的数据，open：布尔类型，通过open设置类名控制显示隐藏

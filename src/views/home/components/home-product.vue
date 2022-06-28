@@ -40,7 +40,6 @@ export default {
   components: { HomePanel, HomeGoods },
   setup() {
     const { target, result } = useLazyData(findGoods)
-    console.log('获取的数据', result)
     return { target, list: result }
   }
 }

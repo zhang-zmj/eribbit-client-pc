@@ -35,3 +35,11 @@ export const findHot = () => {
 export const findGoods = () => {
   return request('home/goods', 'get')
 }
+
+/**
+ * 最新专题
+ * @returns Promise
+ */
+export const findSpecial = () => {
+  return request('home/special', 'get')
+}
